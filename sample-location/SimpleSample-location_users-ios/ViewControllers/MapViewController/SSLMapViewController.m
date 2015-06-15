@@ -61,13 +61,28 @@
 
 	MKAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"loc"];
 	annotationView.canShowCallout = YES;
-	annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+	annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeInfoLight];
 	
 	return annotationView;
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-	[[[UIAlertView alloc] initWithTitle:view.annotation.title message:view.annotation.subtitle delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+	SSLMapPin *pin = (SSLMapPin *)view;
+	
+	CMMapPoint *destination = [CMMapPoint mapPointWithName:view.annotation.subtitle
+												coordinate:pin.coordinate];
+	
+	// check for Google Maps
+	BOOL gMapsInstalled = [CMMapLauncher isMapAppInstalled:CMMapAppGoogleMaps];
+	if( gMapsInstalled ) {
+		[CMMapLauncher launchMapApp:CMMapAppGoogleMaps
+					forDirectionsTo:destination];
+	}
+	else {
+		// run Apple Maps
+		  [CMMapLauncher launchMapApp:CMMapAppAppleMaps
+					  forDirectionsTo:destination];
+	}
 }
 
 -(void)viewWillAppear:(BOOL)animated

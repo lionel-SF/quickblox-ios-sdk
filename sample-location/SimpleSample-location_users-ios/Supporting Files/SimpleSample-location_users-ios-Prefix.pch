@@ -15,6 +15,6 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MapKit/MapKit.h>
     #import <Quickblox/Quickblox.h>
-
+	#import "CMMapLauncher.h"
     #define QB_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #endif

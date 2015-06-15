@@ -8,7 +8,6 @@
 
 #import "SSLAppDelegate.h"
 #import "SSLMapViewController.h"
-#import "SSLLatestCheckinsViewController.h"
 #import "SSLSplashViewController.h"
 #import "SSLLoginViewController.h"
 

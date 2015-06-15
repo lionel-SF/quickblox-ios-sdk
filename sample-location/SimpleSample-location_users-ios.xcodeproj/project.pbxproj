@@ -11,6 +11,7 @@
 		14C3B7F71B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14C3B7F61B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard */; };
 		14C3B7FA1B26EF7B00C7D8A0 /* SSLViewWithBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 14C3B7F91B26EF7B00C7D8A0 /* SSLViewWithBorder.m */; };
 		14C3B7FE1B26F38100C7D8A0 /* SSLMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14C3B7FD1B26F38100C7D8A0 /* SSLMenuTableViewController.m */; };
+		14CD4D961B2EC55300664708 /* CMMapLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CD4D951B2EC55300664708 /* CMMapLauncher.m */; };
 		14F6C5F11B2099F000C74F39 /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5EE1B2099F000C74F39 /* iPhone@2x.png */; };
 		14F6C5F21B2099F000C74F39 /* iPhone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5EF1B2099F000C74F39 /* iPhone@3x.png */; };
 		14F6C5F31B2099F000C74F39 /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5F01B2099F000C74F39 /* iPhone.png */; };
@@ -31,7 +32,6 @@
 		8AC09DC914FF710400658181 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AC09DC514FF710400658181 /* InfoPlist.strings */; };
 		8AC09DCA14FF710400658181 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC09DC614FF710400658181 /* main.m */; };
 		BB12344C1608827100491A31 /* SSLLatestCheckinsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB12344B1608827100491A31 /* SSLLatestCheckinsViewController.xib */; };
-		BB1234501608829200491A31 /* SSLLatestCheckinsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB12344F1608829200491A31 /* SSLLatestCheckinsViewController.m */; };
 		BFA79ED41843E2120044D9E0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA79ED31843E2120044D9E0 /* Security.framework */; };
 		BFFCF7AF19AE2F2F0065AE21 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFCF7AE19AE2F2F0065AE21 /* Quickblox.framework */; };
 		E2D495FD702545A78EA0D14B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF2FD4F7B444F3A804050A3 /* libPods.a */; };
@@ -62,6 +62,8 @@
 		14C3B7F91B26EF7B00C7D8A0 /* SSLViewWithBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSLViewWithBorder.m; path = "SimpleSample-location_users-ios/Views/SSLViewWithBorder.m"; sourceTree = "<group>"; };
 		14C3B7FC1B26F38100C7D8A0 /* SSLMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSLMenuTableViewController.h; path = MenuTableViewController/SSLMenuTableViewController.h; sourceTree = "<group>"; };
 		14C3B7FD1B26F38100C7D8A0 /* SSLMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSLMenuTableViewController.m; path = MenuTableViewController/SSLMenuTableViewController.m; sourceTree = "<group>"; };
+		14CD4D941B2EC55300664708 /* CMMapLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMMapLauncher.h; sourceTree = "<group>"; };
+		14CD4D951B2EC55300664708 /* CMMapLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMMapLauncher.m; sourceTree = "<group>"; };
 		14F6C5EE1B2099F000C74F39 /* iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhone@2x.png"; path = "../../../../../Downloads/iPhone@2x.png"; sourceTree = "<group>"; };
 		14F6C5EF1B2099F000C74F39 /* iPhone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhone@3x.png"; path = "../../../../../Downloads/iPhone@3x.png"; sourceTree = "<group>"; };
 		14F6C5F01B2099F000C74F39 /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone.png; path = ../../../../../Downloads/iPhone.png; sourceTree = "<group>"; };
@@ -89,8 +91,6 @@
 		8AC09DC714FF710400658181 /* SimpleSample-location_users-ios-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "SimpleSample-location_users-ios-Info.plist"; path = "SimpleSample-location_users-ios/Supporting Files/SimpleSample-location_users-ios-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8AC09DC814FF710400658181 /* SimpleSample-location_users-ios-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SimpleSample-location_users-ios-Prefix.pch"; path = "SimpleSample-location_users-ios/Supporting Files/SimpleSample-location_users-ios-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		BB12344B1608827100491A31 /* SSLLatestCheckinsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SSLLatestCheckinsViewController.xib; sourceTree = "<group>"; };
-		BB12344E1608829200491A31 /* SSLLatestCheckinsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLLatestCheckinsViewController.h; sourceTree = "<group>"; };
-		BB12344F1608829200491A31 /* SSLLatestCheckinsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSLLatestCheckinsViewController.m; sourceTree = "<group>"; };
 		BFA79ED31843E2120044D9E0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BFFCF7AE19AE2F2F0065AE21 /* Quickblox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quickblox.framework; path = ../Framework/Quickblox.framework; sourceTree = "<group>"; };
 		FA38CC5A1614758600BDD29A /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
@@ -253,20 +253,13 @@
 			path = wqeqwe;
 			sourceTree = "<group>";
 		};
-		BB12344D1608829200491A31 /* LatestCheckinsViewController */ = {
-			isa = PBXGroup;
-			children = (
-				BB12344E1608829200491A31 /* SSLLatestCheckinsViewController.h */,
-				BB12344F1608829200491A31 /* SSLLatestCheckinsViewController.m */,
-			);
-			path = LatestCheckinsViewController;
-			sourceTree = "<group>";
-		};
 		FA39FB7615EF6FFC002F9D26 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				FA38CC691614767600BDD29A /* SSLDataManager.h */,
 				FA38CC6A1614767600BDD29A /* SSLDataManager.m */,
+				14CD4D941B2EC55300664708 /* CMMapLauncher.h */,
+				14CD4D951B2EC55300664708 /* CMMapLauncher.m */,
 			);
 			name = Manager;
 			path = "SimpleSample-location_users-ios/Objects";
@@ -276,7 +269,6 @@
 			isa = PBXGroup;
 			children = (
 				14C3B7FB1B26F36C00C7D8A0 /* MenuTableViewController */,
-				BB12344D1608829200491A31 /* LatestCheckinsViewController */,
 				FA39FB9615EF715A002F9D26 /* LoginViewController */,
 				FA39FB9F15EF715A002F9D26 /* SplashViewController */,
 				FA39FB9915EF715A002F9D26 /* MapViewController */,
@@ -469,12 +461,12 @@
 				14C3B7FA1B26EF7B00C7D8A0 /* SSLViewWithBorder.m in Sources */,
 				8AC09DCA14FF710400658181 /* main.m in Sources */,
 				FA39FB8F15EF7110002F9D26 /* SSLMapPin.m in Sources */,
+				14CD4D961B2EC55300664708 /* CMMapLauncher.m in Sources */,
 				FA39FBA215EF715A002F9D26 /* SSLLoginViewController.m in Sources */,
 				FA39FBA315EF715A002F9D26 /* SSLMapViewController.m in Sources */,
 				FA39FBA415EF715A002F9D26 /* SSLRegistrationViewController.m in Sources */,
 				1488DA501B20829700B8D918 /* SSLGeoData.m in Sources */,
 				FA39FBA515EF715A002F9D26 /* SSLSplashViewController.m in Sources */,
-				BB1234501608829200491A31 /* SSLLatestCheckinsViewController.m in Sources */,
 				FA38CC6B1614767600BDD29A /* SSLDataManager.m in Sources */,
 				86C9EFF5194C4A940064A91E /* SSLCheckInTableViewCell.m in Sources */,
 				14C3B7FE1B26F38100C7D8A0 /* SSLMenuTableViewController.m in Sources */,
