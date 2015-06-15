@@ -11,7 +11,7 @@
 #import "SSLDataManager.h"
 #import <MTBlockAlertView.h>
 
-@interface SSLMapViewController () <UIAlertViewDelegate>
+@interface SSLMapViewController () <UIAlertViewDelegate, MKMapViewDelegate>
 
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) IBOutlet MKMapView *mapView;
@@ -31,6 +31,13 @@
     }
     return self;
 }
+- (instancetype)init {
+	self = [super init];
+	if ( self ){
+		self.title = NSLocalizedString(@"Map", nil);
+	}
+	return self;
+}
 
 - (void)viewDidLoad
 {
@@ -42,6 +49,25 @@
     [self.locationManager requestAlwaysAuthorization];
 #endif
     [self.locationManager startUpdatingLocation];
+	self.mapView.delegate = self;
+	self.mapView.showsUserLocation = YES;
+
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+	// user blue circle
+	if ([annotation isKindOfClass:[MKUserLocation class]])
+		return nil;
+
+	MKAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"loc"];
+	annotationView.canShowCallout = YES;
+	annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+	
+	return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+	[[[UIAlertView alloc] initWithTitle:view.annotation.title message:view.annotation.subtitle delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -49,80 +75,43 @@
     [super viewWillAppear:animated];
 
     if([self.mapView.annotations count] <= 1) {
-        for(QBLGeoData *geodata in [SSLDataManager instance].checkins) {
-            CLLocationCoordinate2D coord = {.latitude = geodata.latitude, .longitude = geodata.longitude};
+        for(SSLGeoData *geodata in [SSLDataManager instance].checkins) {
+            CLLocationCoordinate2D coord = {.latitude = geodata.geoData.latitude, .longitude = geodata.geoData.longitude};
             SSLMapPin *pin = [[SSLMapPin alloc] initWithCoordinate:coord];
-            pin.subtitle = geodata.status;
-            pin.title = geodata.user.login ? geodata.user.login : geodata.user.email;
+            pin.subtitle = geodata.address;
+			pin.title = geodata.name;
             [self.mapView addAnnotation:pin];
         }
+		if( self.openAtUserLocation ){
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    		[self checkIn:nil];
+			});
+	
+		}
+		else {
+			[self setRegionToLatestCheckin:nil];
+		}
     }
+}
+
+- (IBAction)setRegionToLatestCheckin:(id)sender {
+	SSLGeoData *last = [SSLDataManager instance].checkins.lastObject;
+	CLLocationCoordinate2D lok = CLLocationCoordinate2DMake(last.geoData.latitude, last.geoData.longitude);
+	MKCoordinateRegion region = MKCoordinateRegionMake(lok, MKCoordinateSpanMake(0.05f, 0.05f));
+	[self.mapView setRegion:region animated:YES];
 }
 
 - (IBAction)checkIn:(id)sender
 {
-    // Show alert if user did not logged in
-    if([SSLDataManager instance].currentUser == nil) {
-        MTBlockAlertView* alertView = [[MTBlockAlertView alloc] initWithTitle:@"You must first be authorized."
-                                                                      message:nil
-                                                            completionHanlder:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                                switch (buttonIndex) {
-                                                                    case 1:
-                                                                        [self presentViewController:self.registrationController animated:YES completion:nil];
-                                                                        break;
-                                                                    case 2:
-                                                                        [self presentViewController:self.loginController animated:YES completion:nil];
-                                                                        break;
-                                                                    default:
-                                                                        break;
-                                                                }
-                                                            }
-                                                            cancelButtonTitle:@"Cancel"
-                                                            otherButtonTitles:@"Sign Up", @"Sign In", nil];
-        [alertView show];
-    // Show alert for check in
-    } else {
-        MTBlockAlertView* alertView = [[MTBlockAlertView alloc] initWithTitle:@"Please enter your message"
-                                                                      message:@"\n"
-                                                            completionHanlder:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                                if (buttonIndex == 1) {
-                                                                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-                                                                    
-                                                                    // Check in
-                                                                    //
-                                                                    // create QBLGeoData entity
-                                                                    QBLGeoData *geoData = [QBLGeoData geoData];
-                                                                    geoData.latitude = self.locationManager.location.coordinate.latitude;
-                                                                    geoData.longitude = self.locationManager.location.coordinate.longitude;
-                                                                    geoData.status = [alertView textFieldAtIndex:0].text;
-                                                                    
-                                                                    // post own location
-                                                                    [QBRequest createGeoData:geoData successBlock:^(QBResponse *response, QBLGeoData *geoData) {
-                                                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                                                        
-                                                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Check in was successful!"
-                                                                                                                        message:[NSString stringWithFormat:@"Your coordinates: \n Latitude: %g \n Longitude: %g",geoData.latitude, geoData.longitude]
-                                                                                                                       delegate:self
-                                                                                                              cancelButtonTitle:@"Ok"
-                                                                                                              otherButtonTitles:nil];
-                                                                        [alert show];
-                                                                    } errorBlock:^(QBResponse *response) {
-                                                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                                                        
-                                                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Check in wasn't successful"
-                                                                                                                        message:[response.error description]
-                                                                                                                       delegate:self
-                                                                                                              cancelButtonTitle:@"Ok"
-                                                                                                              otherButtonTitles:nil];
-                                                                        [alert show];
-                                                                    }];
-                                                                }
-                                                            }
-                                                            cancelButtonTitle:@"Canсel"
-                                                            otherButtonTitles:@"Check In", nil];
-        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alertView show];
-    }
+	float spanX = 0.01725;
+	float spanY = 0.01725;
+	MKCoordinateRegion region;
+	region.center.latitude = self.mapView.userLocation.coordinate.latitude;
+	region.center.longitude = self.mapView.userLocation.coordinate.longitude;
+	region.span.latitudeDelta = spanX;
+	region.span.longitudeDelta = spanY;
+	[self.mapView setRegion:region animated:YES];
+
 }
 
 #pragma mark -

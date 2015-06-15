@@ -10,4 +10,10 @@
 
 @implementation SSLGeoData
 
++ (instancetype)geoData {
+	SSLGeoData *ss = [[SSLGeoData alloc] init];
+	ss.geoData = [QBLGeoData geoData];
+	return ss;
+}
+
 @end

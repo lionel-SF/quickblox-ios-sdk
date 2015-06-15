@@ -10,6 +10,7 @@
 #import "SSLAppDelegate.h"
 #import "SSLDataManager.h"
 
+
 @interface SSLSplashViewController ()
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *wheel;
@@ -21,22 +22,33 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    __weak __typeof(self) weakSelf = self;
+	__weak __typeof(self)weakSelf = self;
+	
     [QBRequest createSessionWithSuccessBlock:^(QBResponse *response, QBASession *session) {        
-        QBLGeoDataFilter* filter = [QBLGeoDataFilter new];
-        filter.lastOnly = YES;
-        filter.sortBy = GeoDataSortByKindCreatedAt;
-        
-        [QBRequest geoDataWithFilter:filter page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:70]
-                        successBlock:^(QBResponse *response, NSArray *objects, QBGeneralResponsePage *page) {
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                SSLAppDelegate* myDelegate = (((SSLAppDelegate *)[UIApplication sharedApplication].delegate));
-                                [weakSelf presentViewController:myDelegate.tabBarController animated:YES completion:nil];
-                            });
-                            [[SSLDataManager instance] saveCheckins:objects];
-        } errorBlock:^(QBResponse *response) {
-            NSLog(@"Error = %@", response.error);
-        }];
+
+		[QBRequest objectsWithClassName:@"bank" extendedRequest:nil successBlock:^(QBResponse *response, NSArray *objects, QBResponsePage *page) {
+			NSMutableArray *checkins = [NSMutableArray array];
+			
+			for( QBCOCustomObject *object in objects ){
+				SSLGeoData *geo = [SSLGeoData geoData];
+				geo.geoData.longitude = [object.fields[@"longitude"] doubleValue];
+				geo.geoData.latitude = [object.fields[@"latitude"] doubleValue];
+				geo.name = object.fields[@"name"];
+				geo.branch = object.fields[@"branch"];
+				geo.address = object.fields[@"address"];
+				geo.cityName = object.fields[@"city_name"];
+				[checkins addObject:geo];
+			}
+			
+			[SSLDataManager.instance saveCheckins:checkins];
+			SSLAppDelegate *appDelegate = (SSLAppDelegate *)[UIApplication sharedApplication].delegate;
+			
+			[weakSelf presentViewController:appDelegate.menuController animated:YES completion:nil];
+			
+		} errorBlock:^(QBResponse *response) {
+			NSLog(@"Error = %@", response.error);
+		}];
+		
         
     } errorBlock:^(QBResponse *response) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", "")

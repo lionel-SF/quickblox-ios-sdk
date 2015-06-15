@@ -8,6 +8,7 @@
 //
 // This class presents storage for user's checkins
 //
+#import "SSLGeoData.h"
 
 @interface SSLDataManager : NSObject
 

@@ -13,4 +13,6 @@
 
 @interface SSLMapViewController : UIViewController
 
+@property (assign) BOOL openAtUserLocation;
+
 @end

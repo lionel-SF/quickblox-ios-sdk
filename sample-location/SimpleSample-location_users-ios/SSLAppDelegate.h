@@ -9,10 +9,12 @@
 // This class sets QuickBlox credentials
 // Then shows splash screen that creates QuickBlox session in order to use QuickBlox API.
 //
+#import "SSLMenuTableViewController.h"
 
 @interface SSLAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, readonly) UITabBarController *tabBarController;
+@property (nonatomic, strong) SSLMenuTableViewController *menuController;
 @property (nonatomic, strong) UIWindow* window;
 
 @end

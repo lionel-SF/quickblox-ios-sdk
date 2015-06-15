@@ -49,7 +49,7 @@ static NSString* const CheckInCellIdentifier = @"CheckinCellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QBLGeoData *geodata = ([SSLDataManager instance].checkins)[indexPath.row];
+    SSLGeoData *geodata = ([SSLDataManager instance].checkins)[indexPath.row];
     
     SSLCheckInTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CheckInCellIdentifier];
     

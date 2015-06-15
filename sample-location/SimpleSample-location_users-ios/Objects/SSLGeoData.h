@@ -10,4 +10,13 @@
 
 @interface SSLGeoData : NSObject
 
++ (instancetype)geoData;
+
+@property (nonatomic, strong) QBLGeoData *geoData;
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *branch;
+@property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSString *cityName;
+
 @end

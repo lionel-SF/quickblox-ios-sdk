@@ -24,33 +24,36 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Set QuickBlox credentials (You must create application in admin.quickblox.com)
-    [QBApplication sharedApplication].applicationId = 92;
-    [QBConnection registerServiceKey:@"wJHdOcQSxXQGWx5"];
-    [QBConnection registerServiceSecret:@"BTFsj7Rtt27DAmT"];
+    [QBApplication sharedApplication].applicationId = 24015;
+    [QBConnection registerServiceKey:@"rgukTtyruAvvmpu"];
+    [QBConnection registerServiceSecret:@"UU9x3QuU39WUzk8"];
     [QBSettings setAccountKey:@"7yvNe17TnjNUqDoPwfqp"];
     
     // create two  UIViewControllers
-    UIViewController *mapViewControleler, *latestCheckinsViewControleler;
-    mapViewControleler = [[SSLMapViewController alloc] initWithNibName:nil bundle:nil];
-    latestCheckinsViewControleler = [[SSLLatestCheckinsViewController alloc] initWithNibName:nil bundle:nil];
-    
+//    UIViewController *mapViewControleler, *latestCheckinsViewControleler;
+//    mapViewControleler = [[SSLMapViewController alloc] initWithNibName:nil bundle:nil];
+//    latestCheckinsViewControleler = [[SSLLatestCheckinsViewController alloc] initWithNibName:nil bundle:nil];
+	
     // connect views to tabBar
-    self.tabBarController = [UITabBarController new];
-    
+//    self.tabBarController = [UITabBarController new];
+	
     if(QB_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.tabBarController.tabBar.translucent = NO;
     }
-    
-    self.tabBarController.viewControllers = @[mapViewControleler, latestCheckinsViewControleler];
-    
+	
+	self.menuController = (SSLMenuTableViewController *) [[UIStoryboard storyboardWithName:@"SSLMenuStoryboard" bundle:nil] instantiateInitialViewController];
+	
+//    self.tabBarController.viewControllers = @[mapViewControleler];
+	
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
     self.splashController = [[SSLSplashViewController alloc] initWithNibName:nil bundle:nil];
     self.window.rootViewController = (UIViewController *)self.splashController;
     [self.window makeKeyAndVisible];
-    
+	
     return YES;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

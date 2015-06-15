@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1488DA501B20829700B8D918 /* SSLGeoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1488DA4F1B20829700B8D918 /* SSLGeoData.m */; };
+		14C3B7F71B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14C3B7F61B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard */; };
+		14C3B7FA1B26EF7B00C7D8A0 /* SSLViewWithBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 14C3B7F91B26EF7B00C7D8A0 /* SSLViewWithBorder.m */; };
+		14C3B7FE1B26F38100C7D8A0 /* SSLMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14C3B7FD1B26F38100C7D8A0 /* SSLMenuTableViewController.m */; };
+		14F6C5F11B2099F000C74F39 /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5EE1B2099F000C74F39 /* iPhone@2x.png */; };
+		14F6C5F21B2099F000C74F39 /* iPhone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5EF1B2099F000C74F39 /* iPhone@3x.png */; };
+		14F6C5F31B2099F000C74F39 /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F6C5F01B2099F000C74F39 /* iPhone.png */; };
 		86C9EFF0194C45270064A91E /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86C9EFEF194C45270064A91E /* images.xcassets */; };
 		86C9EFF2194C46A50064A91E /* SSLCheckInTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 86C9EFF1194C46A50064A91E /* SSLCheckInTableViewCell.xib */; };
 		86C9EFF5194C4A940064A91E /* SSLCheckInTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C9EFF4194C4A940064A91E /* SSLCheckInTableViewCell.m */; };
@@ -48,6 +55,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1488DA4E1B20829700B8D918 /* SSLGeoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLGeoData.h; sourceTree = "<group>"; };
+		1488DA4F1B20829700B8D918 /* SSLGeoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSLGeoData.m; sourceTree = "<group>"; };
+		14C3B7F61B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SSLMenuStoryboard.storyboard; sourceTree = "<group>"; };
+		14C3B7F81B26EF7B00C7D8A0 /* SSLViewWithBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSLViewWithBorder.h; path = "SimpleSample-location_users-ios/Views/SSLViewWithBorder.h"; sourceTree = "<group>"; };
+		14C3B7F91B26EF7B00C7D8A0 /* SSLViewWithBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSLViewWithBorder.m; path = "SimpleSample-location_users-ios/Views/SSLViewWithBorder.m"; sourceTree = "<group>"; };
+		14C3B7FC1B26F38100C7D8A0 /* SSLMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSLMenuTableViewController.h; path = MenuTableViewController/SSLMenuTableViewController.h; sourceTree = "<group>"; };
+		14C3B7FD1B26F38100C7D8A0 /* SSLMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSLMenuTableViewController.m; path = MenuTableViewController/SSLMenuTableViewController.m; sourceTree = "<group>"; };
+		14F6C5EE1B2099F000C74F39 /* iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhone@2x.png"; path = "../../../../../Downloads/iPhone@2x.png"; sourceTree = "<group>"; };
+		14F6C5EF1B2099F000C74F39 /* iPhone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhone@3x.png"; path = "../../../../../Downloads/iPhone@3x.png"; sourceTree = "<group>"; };
+		14F6C5F01B2099F000C74F39 /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone.png; path = ../../../../../Downloads/iPhone.png; sourceTree = "<group>"; };
 		4BF2FD4F7B444F3A804050A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CDB12B461EB436193377094 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		86C9EFEF194C45270064A91E /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
@@ -132,10 +149,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14C3B7FB1B26F36C00C7D8A0 /* MenuTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				14C3B7FC1B26F38100C7D8A0 /* SSLMenuTableViewController.h */,
+				14C3B7FD1B26F38100C7D8A0 /* SSLMenuTableViewController.m */,
+			);
+			name = MenuTableViewController;
+			sourceTree = "<group>";
+		};
 		869BD089194F32320055A33D /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				869BD08A194F323B0055A33D /* Cells */,
+				14C3B7F81B26EF7B00C7D8A0 /* SSLViewWithBorder.h */,
+				14C3B7F91B26EF7B00C7D8A0 /* SSLViewWithBorder.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -154,6 +182,8 @@
 			children = (
 				FA39FB8D15EF7110002F9D26 /* SSLMapPin.h */,
 				FA39FB8E15EF7110002F9D26 /* SSLMapPin.m */,
+				1488DA4E1B20829700B8D918 /* SSLGeoData.h */,
+				1488DA4F1B20829700B8D918 /* SSLGeoData.m */,
 			);
 			name = "Data Transfer Object";
 			path = "SimpleSample-location_users-ios/Objects";
@@ -245,6 +275,7 @@
 		FA39FB9515EF715A002F9D26 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				14C3B7FB1B26F36C00C7D8A0 /* MenuTableViewController */,
 				BB12344D1608829200491A31 /* LatestCheckinsViewController */,
 				FA39FB9615EF715A002F9D26 /* LoginViewController */,
 				FA39FB9F15EF715A002F9D26 /* SplashViewController */,
@@ -294,6 +325,9 @@
 		FA43ADF9152B9648000A2EF7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				14F6C5EE1B2099F000C74F39 /* iPhone@2x.png */,
+				14F6C5EF1B2099F000C74F39 /* iPhone@3x.png */,
+				14F6C5F01B2099F000C74F39 /* iPhone.png */,
 				FA43AE0E152B965E000A2EF7 /* iPhone */,
 			);
 			path = Resources;
@@ -317,6 +351,7 @@
 				FA43AE15152B965E000A2EF7 /* SSLLoginViewController.xib */,
 				FA43AE17152B965E000A2EF7 /* SSLRegistrationViewController.xib */,
 				86C9EFF1194C46A50064A91E /* SSLCheckInTableViewCell.xib */,
+				14C3B7F61B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard */,
 			);
 			path = xibs;
 			sourceTree = "<group>";
@@ -350,7 +385,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SSL;
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = QuickBlox;
 			};
 			buildConfigurationList = 8A2F265114F7F0D300292876 /* Build configuration list for PBXProject "SimpleSample-location_users-ios" */;
@@ -379,10 +414,14 @@
 				86C9EFF2194C46A50064A91E /* SSLCheckInTableViewCell.xib in Resources */,
 				86C9EFF0194C45270064A91E /* images.xcassets in Resources */,
 				FA43AE1E152B965E000A2EF7 /* SSLLoginViewController.xib in Resources */,
+				14F6C5F31B2099F000C74F39 /* iPhone.png in Resources */,
+				14C3B7F71B26E6D800C7D8A0 /* SSLMenuStoryboard.storyboard in Resources */,
 				FA43AE1F152B965E000A2EF7 /* SSLMapViewController.xib in Resources */,
 				FA43AE20152B965E000A2EF7 /* SSLRegistrationViewController.xib in Resources */,
 				FA39FB7515EF6FA2002F9D26 /* SSLSplashViewController.xib in Resources */,
 				BB12344C1608827100491A31 /* SSLLatestCheckinsViewController.xib in Resources */,
+				14F6C5F11B2099F000C74F39 /* iPhone@2x.png in Resources */,
+				14F6C5F21B2099F000C74F39 /* iPhone@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,15 +466,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC09DA514FF6E8C00658181 /* SSLAppDelegate.m in Sources */,
+				14C3B7FA1B26EF7B00C7D8A0 /* SSLViewWithBorder.m in Sources */,
 				8AC09DCA14FF710400658181 /* main.m in Sources */,
 				FA39FB8F15EF7110002F9D26 /* SSLMapPin.m in Sources */,
 				FA39FBA215EF715A002F9D26 /* SSLLoginViewController.m in Sources */,
 				FA39FBA315EF715A002F9D26 /* SSLMapViewController.m in Sources */,
 				FA39FBA415EF715A002F9D26 /* SSLRegistrationViewController.m in Sources */,
+				1488DA501B20829700B8D918 /* SSLGeoData.m in Sources */,
 				FA39FBA515EF715A002F9D26 /* SSLSplashViewController.m in Sources */,
 				BB1234501608829200491A31 /* SSLLatestCheckinsViewController.m in Sources */,
 				FA38CC6B1614767600BDD29A /* SSLDataManager.m in Sources */,
 				86C9EFF5194C4A940064A91E /* SSLCheckInTableViewCell.m in Sources */,
+				14C3B7FE1B26F38100C7D8A0 /* SSLMenuTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,6 +501,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -495,6 +538,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -531,7 +575,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "SimpleSample-location_users-ios/Supporting Files/SimpleSample-location_users-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-ObjC",
@@ -543,7 +587,7 @@
 					"-lstdc++",
 				);
 				PRODUCT_NAME = Location;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3f3666e5-0de4-4af0-a260-af8921b354dd";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ee2916f1-b8db-4b90-8d21-b3b56fcf4341";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -570,7 +614,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "SimpleSample-location_users-ios/Supporting Files/SimpleSample-location_users-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-ObjC",

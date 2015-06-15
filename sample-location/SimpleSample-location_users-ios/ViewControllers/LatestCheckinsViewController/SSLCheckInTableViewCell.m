@@ -17,10 +17,10 @@
 
 @implementation SSLCheckInTableViewCell
 
-- (void)configureWithGeoData:(QBLGeoData *)geoData
+- (void)configureWithGeoData:(SSLGeoData *)geoData
 {
-    self.nameLabel.text = geoData.user.login;
-    self.checkinsLabel.text = geoData.status;
+    self.nameLabel.text = geoData.geoData.user.login;
+    self.checkinsLabel.text = geoData.name;
 }
 
 @end

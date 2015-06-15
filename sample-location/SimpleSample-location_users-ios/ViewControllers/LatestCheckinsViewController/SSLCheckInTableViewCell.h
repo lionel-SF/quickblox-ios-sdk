@@ -5,9 +5,10 @@
 //  Created by Andrey Moskvin on 6/14/14.
 //
 //
+#import "SSLGeoData.h"
 
 @interface SSLCheckInTableViewCell : UITableViewCell
 
-- (void)configureWithGeoData:(QBLGeoData *)geoData;
+- (void)configureWithGeoData:(SSLGeoData *)geoData;
 
 @end
