@@ -24,7 +24,12 @@
     [super viewDidLoad];
 	__weak __typeof(self)weakSelf = self;
 	
-    [QBRequest createSessionWithSuccessBlock:^(QBResponse *response, QBASession *session) {        
+	QBSessionParameters *parameters = [QBSessionParameters new];
+	parameters.userLogin = @"qbuser321";
+	parameters.userPassword = @"qbuser321";
+	
+	
+    [QBRequest createSessionWithExtendedParameters:parameters successBlock:^(QBResponse *response, QBASession *session) {
 
 		[QBRequest objectsWithClassName:@"bank" extendedRequest:nil successBlock:^(QBResponse *response, NSArray *objects, QBResponsePage *page) {
 			NSMutableArray *checkins = [NSMutableArray array];
@@ -45,6 +50,20 @@
 			
 			[weakSelf presentViewController:appDelegate.menuController animated:YES completion:nil];
 			
+			NSData *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+			
+			if( deviceToken != nil ){
+				
+				NSString *deviceIdentifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+				//
+				
+				[QBRequest registerSubscriptionForDeviceToken:deviceToken uniqueDeviceIdentifier:deviceIdentifier
+												 successBlock:^(QBResponse *response, NSArray *subscriptions) {
+													 
+												 } errorBlock:^(QBError *error) {
+													 
+												 }];
+			}
 		} errorBlock:^(QBResponse *response) {
 			NSLog(@"Error = %@", response.error);
 		}];

@@ -27,14 +27,15 @@
     [QBConnection registerServiceKey:@"rgukTtyruAvvmpu"];
     [QBConnection registerServiceSecret:@"UU9x3QuU39WUzk8"];
     [QBSettings setAccountKey:@"7yvNe17TnjNUqDoPwfqp"];
-    
-    // create two  UIViewControllers
-//    UIViewController *mapViewControleler, *latestCheckinsViewControleler;
-//    mapViewControleler = [[SSLMapViewController alloc] initWithNibName:nil bundle:nil];
-//    latestCheckinsViewControleler = [[SSLLatestCheckinsViewController alloc] initWithNibName:nil bundle:nil];
 	
-    // connect views to tabBar
-//    self.tabBarController = [UITabBarController new];
+//	[QBApplication sharedApplication].applicationId = 92;
+//	[QBConnection registerServiceKey:@"wJHdOcQSxXQGWx5"];
+//	[QBConnection registerServiceSecret:@"BTFsj7Rtt27DAmT"];
+//	[QBSettings setAccountKey:@"7yvNe17TnjNUqDoPwfqp"];
+	
+//	[QBConnection setServiceZone:QBConnectionZoneTypeDevelopment];
+	
+	[QBApplication sharedApplication].productionEnvironmentForPushesEnabled = YES;
 	
     if(QB_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.tabBarController.tabBar.translucent = NO;
@@ -50,9 +51,29 @@
     self.window.rootViewController = (UIViewController *)self.splashController;
     [self.window makeKeyAndVisible];
 	
+#ifdef __IPHONE_8_0
+	//Right, that is the point
+	UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+																						 |UIRemoteNotificationTypeSound
+																						 |UIRemoteNotificationTypeAlert) categories:nil];
+	[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+#else
+	//register to receive notifications
+	UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+#endif
+	
     return YES;
 }
 
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	[[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:@"deviceToken"];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+	[application registerForRemoteNotifications];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
