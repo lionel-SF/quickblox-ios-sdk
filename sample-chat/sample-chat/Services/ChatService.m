@@ -96,9 +96,13 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
     dialog.lastMessageUserID = [QBSession currentSession].currentUser.ID;
     dialog.lastMessageText = messageText;
     dialog.lastMessageDate = message.dateSent;
-    
+	message.dialogID = dialog.ID;
     // send a message
-    return [dialog sendMessage:message];
+	if ([dialog sendMessage:message]) {
+		[self deleteMessageWithDelay:message];
+		return YES;
+	}
+	return NO;
 }
 
 
@@ -111,7 +115,7 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
     
     QBResponsePage *pageDialogs = [QBResponsePage responsePageWithLimit:100 skip:0];
     [QBRequest dialogsForPage:pageDialogs extendedRequest:nil successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *pageResponseDialogs) {
-
+		[SVProgressHUD dismiss];
         // save dialogs in memory
         //
         self.dialogs = dialogObjects.mutableCopy;
@@ -275,7 +279,7 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
 
 - (void)addMessage:(QBChatMessage *)message forDialogId:(NSString *)dialogId
 {
-    NSMutableArray *messagesArray = [self.messages objectForKey:dialogId];
+    NSMutableArray *messagesArray = self.messages[dialogId];
     if(messagesArray != nil){
         [messagesArray addObject:message];
         
@@ -289,6 +293,17 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
     }
 }
 
+- (BOOL)removeMessage:(QBChatMessage *)message forDialogId:(NSString *)dialogId {
+	
+    NSMutableArray *messagesArray = self.messages[dialogId];
+	if (messagesArray != nil) {
+		[messagesArray removeObject:message];
+		
+		[self sortMessages:messagesArray];
+		return YES;
+	}
+	return NO;
+}
 
 #pragma mark
 #pragma mark QBChatDelegate
@@ -372,7 +387,8 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDialogsUpdated object:nil];
         }];
     }
-    
+	[self deleteMessageWithDelay:message];
+	
     // notify observers
     BOOL processed = NO;
     if([self.delegate respondsToSelector:@selector(chatDidReceiveMessage:)]){
@@ -386,8 +402,55 @@ typedef void(^CompletionBlockWithResult)(NSArray *);
         
         [[SoundService instance] playNotificationSound];
     }
+	
+
 }
 
+- (void)deleteMessageWithDelay:(QBChatMessage *)message {
+	[self performSelector:@selector(deleteMessage:) withObject:message afterDelay:20];
+}
+
+- (void)deleteMessage:(QBChatMessage *)message {
+	__weak __typeof(self)weakSelf = self;
+	[QBRequest deleteMessageWithID:message.ID successBlock:^(QBResponse *response) {
+		
+		__typeof(self)strongSelf = weakSelf;
+		
+		[strongSelf removeMessage:message forDialogId:message.dialogID];
+		
+		// update dialog last message fields
+		QBChatMessage *lastMessage =  [strongSelf.messages[message.dialogID] lastObject];
+		
+		QBChatDialog *dialog = strongSelf.dialogsAsDictionary[message.dialogID];
+		if(dialog != nil){
+			dialog.lastMessageUserID = lastMessage.senderID;
+			dialog.lastMessageText = lastMessage.text;
+			dialog.lastMessageDate = lastMessage.dateSent;
+		}
+		
+		// notify observers
+		BOOL processed = NO;
+		if([strongSelf.delegate respondsToSelector:@selector(chatDidDeleteMessage:)]){
+			processed = [strongSelf.delegate chatDidDeleteMessage:message];
+		}
+		if(!processed){
+			[[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDialogsUpdated object:nil];
+			[[TWMessageBarManager sharedInstance] hideAll];
+			[[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Message has been deleted"
+														   description:message.text
+																  type:TWMessageBarMessageTypeInfo];
+			
+			[[SoundService instance] playNotificationSound];
+		}
+		
+		
+		NSLog(@"message has been deleted %@", message);
+		
+
+	} errorBlock:^(QBResponse *response) {
+		NSLog(@"error in deleting message %@", response.error.error);
+	}];
+}
 
 #pragma mark
 #pragma mark Utils

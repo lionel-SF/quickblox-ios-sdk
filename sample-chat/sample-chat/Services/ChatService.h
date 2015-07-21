@@ -15,6 +15,7 @@
 
 @protocol ChatServiceDelegate <NSObject>
 - (BOOL)chatDidReceiveMessage:(QBChatMessage *)message;
+- (BOOL)chatDidDeleteMessage:(QBChatMessage *)message;
 - (void)chatDidLogin;
 @end
 
@@ -41,6 +42,8 @@
 - (NSMutableArray *)messagsForDialogId:(NSString *)dialogId;
 - (void)addMessages:(NSArray *)messages forDialogId:(NSString *)dialogId;
 - (void)addMessage:(QBChatMessage *)message forDialogId:(NSString *)dialogId;
+
+- (BOOL)removeMessage:(QBChatMessage *)message forDialogId:(NSString *)dialogId;
 
 - (void)requestDialogsWithCompletionBlock:(void(^)())completionBlock;
 - (void)requestDialogUpdateWithId:(NSString *)dialogId completionBlock:(void(^)())completionBlock;

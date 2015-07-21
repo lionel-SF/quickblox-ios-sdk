@@ -266,4 +266,12 @@
     return YES;
 }
 
+- (BOOL)chatDidDeleteMessage:(QBChatMessage *)message {
+	[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Message: %@", message.text] message:[NSString stringWithFormat:@"Message with ID:%@ has been deleted", message.ID] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+	[self.messagesTableView reloadData];
+	
+	return YES;
+}
+
+
 @end
