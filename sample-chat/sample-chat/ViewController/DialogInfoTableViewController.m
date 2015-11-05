@@ -10,6 +10,7 @@
 #import "UsersDataSource.h"
 #import "ServicesManager.h"
 #import "EditDialogTableViewController.h"
+#import "PrivacyTableViewController.h"
 
 @interface DialogInfoTableViewController() <QMChatServiceDelegate, QMChatConnectionDelegate>
 
@@ -57,7 +58,18 @@
     if ([segue.identifier isEqualToString:kGoToAddOccupantsSegueIdentifier]) {
         EditDialogTableViewController* viewController = segue.destinationViewController;
         viewController.dialog = self.dialog;
+    } else if ([segue.identifier isEqualToString:kShowPrivacyViewController]) {
+        PrivacyTableViewController *viewController = segue.destinationViewController;
+        viewController.user = sender;
     }
+}
+
+#pragma mark - Table view data source
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    QBUUser *selectedUser = self.usersDatasource.users[indexPath.row];
+    [self performSegueWithIdentifier:kShowPrivacyViewController sender:selectedUser];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - QMChatServiceDelegate

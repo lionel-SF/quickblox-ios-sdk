@@ -53,6 +53,11 @@ static NSString *const kGoToAddOccupantsSegueIdentifier = @"goToAddOccupants";
 static NSString *const kGoToChatSegueIdentifier = @"goToChat";
 
 /**
+ *  PrivacyTableViewController
+ */
+static NSString *const kShowPrivacyViewController = @"kShowPrivacyViewController";
+
+/**
  * Dialog keys
  */
 static NSString *const kPushNotificationDialogIdentifierKey = @"dialog_id";
