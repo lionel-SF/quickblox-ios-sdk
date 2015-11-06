@@ -80,4 +80,5 @@
 "SA_STR_LAST_ACTIVITY_DATE" = "last_activity_date";
 
 // Privacy list
+"SA_STR_PRIVACY_LIST_CONTROLLER" = "kShowPrivacyVC";
 "SA_STR_PRIVACY_LIST_NAME" = "public1";

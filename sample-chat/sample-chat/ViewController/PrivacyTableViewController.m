@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, UserPrivacyStatus) {
     UserPrivacyStatusNotBlocked  = 2
 };
 
+
 @interface PrivacyTableViewController () <QBChatDelegate>
 
 @property (assign, nonatomic) UserPrivacyStatus userPrivacyStatus;
@@ -152,9 +153,11 @@ typedef NS_ENUM(NSUInteger, UserPrivacyStatus) {
     
     self.userPrivacyStatus = UserPrivacyStatusNotBlocked;
     
-    for (QBPrivacyItem *item in privacyList.items) {
+    NSArray *items = privacyList.items.copy;
+    for (QBPrivacyItem *item in items) {
         if ([item valueForType] == self.user.ID && item.action == DENY) {
             self.userPrivacyStatus = UserPrivacyStatusBlocked;
+            break;
         }
     }
     

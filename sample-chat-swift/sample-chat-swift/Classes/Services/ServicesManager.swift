@@ -11,7 +11,7 @@ import Foundation
 /**
 *  Implements user's memory/cache storing, error handling, show top bar notifications.
 */
-class ServicesManager: QMServicesManager {
+class ServicesManager: QMServicesManager, QBChatDelegate {
     
     var currentDialogID : String = ""
     
@@ -35,10 +35,11 @@ class ServicesManager: QMServicesManager {
     override init() {
         super.init()
         
-        self.setupContactServices()
+        QBChat.instance().addDelegate(self)
+        self.setupServices()
     }
     
-    private func setupContactServices() {
+    private func setupServices() {
         self.notificationService = NotificationService()
     }
     
@@ -174,4 +175,10 @@ class ServicesManager: QMServicesManager {
         self.handleNewMessage(message, dialogID: dialogID)
     }
     
+    // MARK: QBChatDelegate
+    
+    func chatDidConnect() {
+        QBChat.instance().setDefaultPrivacyListWithName("SA_STR_PRIVACY_LIST_NAME".localized)
+        QBChat.instance().setActivePrivacyListWithName("SA_STR_PRIVACY_LIST_NAME".localized)
+    }
 }

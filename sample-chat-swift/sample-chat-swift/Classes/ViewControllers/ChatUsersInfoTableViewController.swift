@@ -47,10 +47,16 @@ class ChatUsersInfoTableViewController: UsersListTableViewController, QMChatServ
             if let newDialogViewController = segue.destinationViewController as? NewDialogViewController {
                 newDialogViewController.dialog = self.dialog
             }
+        } else if segue.identifier == "SA_STR_PRIVACY_LIST_CONTROLLER".localized {
+            if let privacyViewController = segue.destinationViewController as? PrivacyTableViewController {
+                privacyViewController.user = sender as! QBUUser?
+            }
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedUser: QBUUser? = self.users![indexPath.row]
+        self.performSegueWithIdentifier("SA_STR_PRIVACY_LIST_CONTROLLER".localized, sender: selectedUser)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
