@@ -68,7 +68,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     QBUUser *selectedUser = self.usersDatasource.users[indexPath.row];
-    [self performSegueWithIdentifier:kShowPrivacyViewController sender:selectedUser];
+    if (![selectedUser isEqual:[ServicesManager instance].currentUser]) {
+        [self performSegueWithIdentifier:kShowPrivacyViewController sender:selectedUser];
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

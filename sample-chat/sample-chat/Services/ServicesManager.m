@@ -35,17 +35,9 @@
 
 - (void)chatServiceChatDidLogin
 {
-    for (QBChatDialog *dialog in [self.chatService.dialogsMemoryStorage unsortedDialogs]) {
-        if (dialog.type == QBChatDialogTypeGroup && !dialog.isJoined) {
-            // Joining to group chat dialogs.
-            [self.chatService joinToGroupDialog:dialog completion:^(NSError * _Nullable error) {
-                //
-                if (error != nil) {
-                    NSLog(@"Failed to join room with error: %@", error.localizedDescription);
-                }
-            }];
-        }
-    }
+    // setting default privacy list
+    [[QBChat instance] setDefaultPrivacyListWithName:kPrivacyListName];
+    [[QBChat instance] setActivePrivacyListWithName:kPrivacyListName];
 }
 
 - (void)showNotificationForMessage:(QBChatMessage *)message inDialogID:(NSString *)dialogID
