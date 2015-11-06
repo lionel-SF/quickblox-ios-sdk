@@ -56,7 +56,7 @@ static NSString *const kGoToChatSegueIdentifier = @"goToChat";
  *  PrivacyList
  */
 static NSString *const kShowPrivacyViewController = @"kShowPrivacyViewController";
-static NSString *const kPrivacyListName = @"public1";
+static NSString *const kPrivacyListName = @"public2";
 
 /**
  * Dialog keys

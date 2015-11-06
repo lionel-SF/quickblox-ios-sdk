@@ -128,6 +128,15 @@ UIActionSheetDelegate
         [strongSelf updateTitle];
     }];
     
+    // Handling blocked message
+    [self.dialog setOnBlockedMessage:^(NSError * _Nullable error) {
+        //
+        if (error != nil) {
+            NSLog(@"Failed to send message with error: %@", error);
+            [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:error.localizedDescription type:TWMessageBarMessageTypeError];
+        }
+    }];
+    
     if (self.dialog.type != QBChatDialogTypePrivate && !self.dialog.isJoined) [self.dialog joinWithCompletionBlock:nil];
 }
 
@@ -214,8 +223,9 @@ UIActionSheetDelegate
 	[[NSNotificationCenter defaultCenter] removeObserver:self.observerDidBecomeActive];
     [[NSNotificationCenter defaultCenter] removeObserver:self.observerDidEnterBackground];
     
-    // Deletes typing blocks.
+    // Deleting blocks.
     [self.dialog clearTypingStatusBlocks];
+    [self.dialog setOnBlockedMessage:nil];
     
     // Resetting currently opened dialog.
     [ServicesManager instance].currentDialogID = nil;
