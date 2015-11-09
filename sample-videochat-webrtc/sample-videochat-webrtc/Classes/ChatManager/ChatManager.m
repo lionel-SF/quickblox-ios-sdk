@@ -8,6 +8,7 @@
 
 #import "ChatManager.h"
 #import "UsersDataSource.h"
+#import "SVProgressHUD.h"
 
 const NSTimeInterval kChatPresenceTimeInterval = 45;
 
@@ -16,6 +17,8 @@ const NSTimeInterval kChatPresenceTimeInterval = 45;
 <QBChatDelegate>
 
 @property (copy, nonatomic) void(^chatLoginCompletionBlock)(BOOL error);
+@property (copy, nonatomic) void(^chatDisconnectedBlock)();
+@property (copy, nonatomic) void(^chatReconnectedBlock)();
 @property (strong, nonatomic) QBRTCTimer *presenceTimer;
 
 @end
@@ -35,7 +38,7 @@ const NSTimeInterval kChatPresenceTimeInterval = 45;
 
 #pragma mark - Login / Logout
 
-- (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL error))completion {
+- (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL error))completion disconnectedBlock:(void(^)())disconnectedBlock reconnectedBlock:(void(^)())reconnectedBlock {
 
     [QBChat.instance addDelegate:self];
     
@@ -45,6 +48,8 @@ const NSTimeInterval kChatPresenceTimeInterval = 45;
     }
     
     self.chatLoginCompletionBlock = completion;
+	self.chatDisconnectedBlock = disconnectedBlock;
+	self.chatReconnectedBlock = reconnectedBlock;
     [QBChat.instance connectWithUser:user];
 }
 
@@ -70,11 +75,15 @@ const NSTimeInterval kChatPresenceTimeInterval = 45;
 }
 
 - (void)chatDidAccidentallyDisconnect {
-    
+	
 	if (self.chatLoginCompletionBlock) {
         
 		self.chatLoginCompletionBlock(YES);
 		self.chatLoginCompletionBlock = nil;
+	}
+	
+	if (self.chatDisconnectedBlock) {
+		self.chatDisconnectedBlock();
 	}
 }
 
@@ -124,6 +133,12 @@ const NSTimeInterval kChatPresenceTimeInterval = 45;
         self.chatLoginCompletionBlock(NO);
         self.chatLoginCompletionBlock = nil;
     }
+}
+
+- (void)chatDidReconnect {
+	if (self.chatReconnectedBlock) {
+		self.chatReconnectedBlock();
+	}
 }
 
 @end

@@ -32,7 +32,7 @@ const NSTimeInterval kQBDialingTimeInterval = 5.f;
     }
 
     [QBSettings setLogLevel:QBLogLevelNothing];
-    
+	[QBChat instance].autoReconnectEnabled = YES;
     //QuickbloxWebRTC preferences
     
     [QBRTCConfig setAnswerTimeInterval:kQBAnswerTimeInterval];

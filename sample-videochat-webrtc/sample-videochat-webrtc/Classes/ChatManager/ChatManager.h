@@ -12,7 +12,7 @@
 
 + (instancetype)instance;
 
-- (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL error))completion;
+- (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL error))completion disconnectedBlock:(void(^)())disconnectedBlock reconnectedBlock:(void(^)())reconnectedBlock;
 - (void)logOut;
 
 @end
