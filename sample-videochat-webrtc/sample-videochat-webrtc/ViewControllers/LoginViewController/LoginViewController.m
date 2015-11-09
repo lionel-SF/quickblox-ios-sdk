@@ -139,7 +139,11 @@ const CGFloat kInfoHeaderHeight = 44;
             
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Login chat error!", nil)];
         }
-    }];
+    } disconnectedBlock:^{
+		[SVProgressHUD showWithStatus:NSLocalizedString(@"Chat disconnected. Attempting to reconnect", nil)];
+	} reconnectedBlock:^{
+		[SVProgressHUD showSuccessWithStatus:@"Chat reconnected"];
+	}];
     
 #endif
 }
