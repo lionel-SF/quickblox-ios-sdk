@@ -546,11 +546,13 @@ UIActionSheetDelegate
             
             if (!shouldLoadFile) return;
             
+            NSLog(@"Cell asks for image...");
             __weak typeof(self)weakSelf = self;
             // Getting image from chat attachment service.
             [[ServicesManager instance].chatService.chatAttachmentService getImageForChatAttachment:attachment completion:^(NSError *error, UIImage *image) {
                 __typeof(self) strongSelf = weakSelf;
-                
+                NSLog(@"Cell received image.");
+                NSAssert([NSThread isMainThread], @"Have to be main thread");
                 if ([(UICollectionViewCell<QMChatAttachmentCell> *)cell attachmentID] != attachment.ID) return;
                 
                 [strongSelf.attachmentCells removeObjectForKey:attachment.ID];
@@ -637,14 +639,16 @@ UIActionSheetDelegate
 
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeAttachmentStatus:(QMMessageAttachmentStatus)status forMessage:(QBChatMessage *)message
 {
-    if (message.dialogID == self.dialog.ID) {
-        
-        if (status == QMMessageAttachmentStatusLoading && message.senderID == self.senderID) {
-            [self insertMessageToTheBottomAnimated:message];
-        } else {
-            [self updateMessage:message];
-        }
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (message.dialogID == self.dialog.ID) {
+            
+            if (status == QMMessageAttachmentStatusLoading && message.senderID == self.senderID) {
+                [self insertMessageToTheBottomAnimated:message];
+            } else {
+                [self updateMessage:message];
+            }
+        }        
+    });
 }
 
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeLoadingProgress:(CGFloat)progress forChatAttachment:(QBChatAttachment *)attachment

@@ -157,13 +157,9 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     
     message.attachmentStatus = status;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeAttachmentStatus:forMessage:)]) {
-            [self.delegate chatAttachmentService:self didChangeAttachmentStatus:status forMessage:message];
-        }
-        
-    });
+    if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeAttachmentStatus:forMessage:)]) {
+        [self.delegate chatAttachmentService:self didChangeAttachmentStatus:status forMessage:message];
+    }
 }
 
 
