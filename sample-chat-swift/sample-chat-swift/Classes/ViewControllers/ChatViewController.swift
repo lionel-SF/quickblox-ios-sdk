@@ -65,7 +65,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
                 
         self.senderID = ServicesManager.instance().currentUser().ID
         self.senderDisplayName = ServicesManager.instance().currentUser().login
-        self.timeIntervalBetweenSections = 300.0
+        self.dataSource.timeIntervalBetweenSections = 300.0
         self.heightForSectionHeader = 40.0
         
         self.updateTitle()

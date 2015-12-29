@@ -77,10 +77,6 @@ QMChatCellDelegate
     return [QBSession currentSession].currentUser.fullName;
 }
 
-- (NSTimeInterval)timeIntervalBetweenSections {
-    return 300.0f;
-}
-
 - (CGFloat)heightForSectionHeader {
     return 40.0f;
 }
@@ -97,6 +93,8 @@ QMChatCellDelegate
     self.attachmentCells = [NSMapTable strongToWeakObjectsMapTable];
     self.stringBuilder = [MessageStatusStringBuilder new];
     self.detailedCells = [NSMutableSet set];
+    
+    self.dataSource.timeIntervalBetweenSections = 300.0f;
     
     [self updateTitle];
     
@@ -165,12 +163,12 @@ QMChatCellDelegate
     [ServicesManager instance].currentDialogID = self.dialog.ID;
     
     // Retrieving messages
-    if ([[self storedMessages] count] > 0 && self.totalMessagesCount == 0) {
+    if ([[self storedMessages] count] > 0 && self.dataSource.totalMessagesCount == 0) {
         
-        [self updateDataSourceWithMessages:[self storedMessages]];
+        [self.dataSource addMessagesToBottom:[self storedMessages]];
         [self refreshMessagesShowingProgress:NO];
     } else {
-        if (self.totalMessagesCount == 0) [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeClear];
+        if (self.dataSource.totalMessagesCount == 0) [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeClear];
         
         __weak __typeof(self)weakSelf = self;
         [[ServicesManager instance] cachedMessagesWithDialogID:self.dialog.ID block:^(NSArray *collection) {
@@ -189,7 +187,7 @@ QMChatCellDelegate
 {
     [super viewDidAppear:animated];
 	
-    if ([self storedMessages].count > 0 && self.totalMessagesCount != [self storedMessages].count) {
+    if ([self storedMessages].count > 0 && self.dataSource.totalMessagesCount != [self storedMessages].count) {
         [self insertMessagesToTheBottomAnimated:[self storedMessages]];
     }
 
@@ -404,7 +402,7 @@ QMChatCellDelegate
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth {
     
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.dataSource messageForIndexPath:indexPath];
     Class viewClass = [self viewClassForItem:item];
     CGSize size = CGSizeZero;
     
@@ -430,7 +428,7 @@ QMChatCellDelegate
 
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.dataSource messageForIndexPath:indexPath];
 
     CGSize size = CGSizeZero;
     if ([self.detailedCells containsObject:item.ID]) {
@@ -456,7 +454,7 @@ QMChatCellDelegate
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
-    Class viewClass = [self viewClassForItem:[self messageForIndexPath:indexPath]];
+    Class viewClass = [self viewClassForItem:[self.dataSource messageForIndexPath:indexPath]];
     if (viewClass == [QMChatAttachmentIncomingCell class] || viewClass == [QMChatAttachmentOutgoingCell class]) return NO;
     
     return [super collectionView:collectionView canPerformAction:action forItemAtIndexPath:indexPath withSender:sender];
@@ -464,7 +462,7 @@ QMChatCellDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
-    QBChatMessage* message = [self messageForIndexPath:indexPath];
+    QBChatMessage* message = [self.dataSource messageForIndexPath:indexPath];
     
     Class viewClass = [self viewClassForItem:message];
     
@@ -497,7 +495,7 @@ QMChatCellDelegate
     layoutModel.avatarSize = (CGSize){0.0, 0.0};
     layoutModel.topLabelHeight = 0.0f;
     
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.dataSource messageForIndexPath:indexPath];
     Class class = [self viewClassForItem:item];
     
     if (class == [QMChatOutgoingCell class] ||
@@ -549,7 +547,7 @@ QMChatCellDelegate
     }
     
     if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
-        QBChatMessage* message = [self messageForIndexPath:indexPath];
+        QBChatMessage* message = [self.dataSource messageForIndexPath:indexPath];
         if (message.attachments != nil) {
             QBChatAttachment* attachment = message.attachments.firstObject;
             
@@ -613,7 +611,7 @@ QMChatCellDelegate
     }
     
     // marking message as read if needed
-    QBChatMessage *itemMessage = [self messageForIndexPath:indexPath];
+    QBChatMessage *itemMessage = [self.dataSource messageForIndexPath:indexPath];
     [self sendReadStatusForMessage:itemMessage];
 }
 
@@ -621,7 +619,7 @@ QMChatCellDelegate
 
 - (void)chatCellDidTapContainer:(QMChatCell *)cell {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    QBChatMessage *currentMessage = [self messageForIndexPath:indexPath];
+    QBChatMessage *currentMessage = [self.dataSource messageForIndexPath:indexPath];
     
     if ([self.detailedCells containsObject:currentMessage.ID]) {
         [self.detailedCells removeObject:currentMessage.ID];
@@ -710,7 +708,7 @@ QMChatCellDelegate
     UICollectionViewCell<QMChatAttachmentCell>* cell = [self.attachmentCells objectForKey:message.ID];
     
     if (cell == nil && progress < 1.0f) {
-        NSIndexPath *indexPath = [self indexPathForMessage:message];
+        NSIndexPath *indexPath = [self.dataSource indexPathForMessage:message];
         cell = (UICollectionViewCell <QMChatAttachmentCell> *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self.attachmentCells setObject:cell forKey:message.ID];
     }
