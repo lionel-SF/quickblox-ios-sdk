@@ -829,7 +829,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
         var cell = self.attachmentCellsMap[message.ID!]
         
         if cell == nil && progress < 1.0 {
-            let indexPath = self.indexPathForMessage(message)
+            let indexPath = self.dataSource.indexPathForMessage(message)
             cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? QMChatAttachmentCell
             self.attachmentCellsMap[message.ID!] = cell
         }
