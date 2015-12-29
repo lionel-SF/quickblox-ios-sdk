@@ -96,7 +96,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
         
         if let storedMessagesCount = self.storedMessages()?.count {
             
-            if self.totalMessagesCount != UInt(storedMessagesCount) {
+            if self.dataSource.totalMessagesCount != UInt(storedMessagesCount) {
                 self.insertMessagesToTheBottomAnimated(self.storedMessages()!)
             }
         }
@@ -197,11 +197,11 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
     func updateMessages() {
         
         // Retrieving messages
-        if (self.storedMessages()?.count > 0 && self.totalMessagesCount == 0) {
-            self.updateDataSourceWithMessages(self.storedMessages()!)
+        if (self.storedMessages()?.count > 0 && self.dataSource.totalMessagesCount == 0) {
+            self.dataSource.addMessagesToBottom(self.storedMessages()!)
             self.loadMessages()
         } else {
-            if self.totalMessagesCount == 0 { SVProgressHUD.showWithStatus("SA_STR_LOADING_MESSAGES".localized, maskType: SVProgressHUDMaskType.Clear) }
+            if self.dataSource.totalMessagesCount == 0 { SVProgressHUD.showWithStatus("SA_STR_LOADING_MESSAGES".localized, maskType: SVProgressHUDMaskType.Clear) }
             
             ServicesManager.instance().cachedMessagesWithDialogID(self.dialog?.ID, block: {
                 [unowned self] (collection: [AnyObject]!) -> Void in
@@ -507,8 +507,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
     override func collectionView(collectionView: QMChatCollectionView!, dynamicSizeAtIndexPath indexPath: NSIndexPath!, maxWidth: CGFloat) -> CGSize {
         
         var size = CGSizeZero
-        
-        if let item : QBChatMessage = self.messageForIndexPath(indexPath) {
+        if let item : QBChatMessage = self.dataSource.messageForIndexPath(indexPath) {
             if self.viewClassForItem(item) === QMChatAttachmentIncomingCell.self {
                 size = CGSize(width: min(200, maxWidth), height: 200)
             } else if self.viewClassForItem(item) === QMChatAttachmentOutgoingCell.self {
@@ -529,7 +528,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
      override func collectionView(collectionView: QMChatCollectionView!, minWidthAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
 
         var size = CGSizeZero
-        if let item : QBChatMessage = self.messageForIndexPath(indexPath) {
+        if let item : QBChatMessage = self.dataSource.messageForIndexPath(indexPath) {
             
             if self.detailedCells.contains(item.ID!) {
                 
@@ -556,7 +555,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
         layoutModel.spaceBetweenTextViewAndBottomLabel = 5
         layoutModel.topLabelHeight = 0.0
         
-        if let item : QBChatMessage = self.messageForIndexPath(indexPath) {
+        if let item : QBChatMessage = self.dataSource.messageForIndexPath(indexPath) {
             let viewClass : AnyClass = self.viewClassForItem(item) as AnyClass
             
             if viewClass === QMChatOutgoingCell.self || viewClass === QMChatAttachmentOutgoingCell.self {
@@ -601,7 +600,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
                 (cell as! QMChatCell).containerView?.bgColor = UIColor(red: 10.0/255.0, green: 95.0/255.0, blue: 255.0/255.0, alpha: 1.0)
             }
             
-            let message: QBChatMessage = self.messageForIndexPath(indexPath)
+            let message: QBChatMessage = self.dataSource.messageForIndexPath(indexPath)
             
             if let attachments = message.attachments {
                 
@@ -656,7 +655,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
     }
     
     override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
-        let item : QBChatMessage = self.messageForIndexPath(indexPath)
+        let item : QBChatMessage = self.dataSource.messageForIndexPath(indexPath)
         let viewClass : AnyClass = self.viewClassForItem(item) as AnyClass
         
         if viewClass === QMChatAttachmentIncomingCell.self || viewClass === QMChatAttachmentOutgoingCell.self {
@@ -668,7 +667,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
     
     override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
         if action == Selector("copy:") {
-            let item : QBChatMessage = self.messageForIndexPath(indexPath)
+            let item : QBChatMessage = self.dataSource.messageForIndexPath(indexPath)
             let viewClass : AnyClass = self.viewClassForItem(item) as AnyClass
 
             if viewClass === QMChatAttachmentIncomingCell.self || viewClass === QMChatAttachmentOutgoingCell.self {
@@ -700,7 +699,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
         }
         
         // marking message as read if needed
-        if let message = self.messageForIndexPath(indexPath) {
+        if let message = self.dataSource.messageForIndexPath(indexPath) {
             self.sendReadStatusForMessage(message)
         }
     }
@@ -710,7 +709,7 @@ class ChatViewController: QMChatViewController, QMChatServiceDelegate, UIActionS
     func chatCellDidTapContainer(cell: QMChatCell!) {
         let indexPath = self.collectionView?.indexPathForCell(cell)
         
-        if let currentMessage = self.messageForIndexPath(indexPath) {
+        if let currentMessage = self.dataSource.messageForIndexPath(indexPath) {
             
             if self.detailedCells.contains(currentMessage.ID!) {
                 self.detailedCells.remove(currentMessage.ID!)
