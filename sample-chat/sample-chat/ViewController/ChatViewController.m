@@ -89,7 +89,7 @@ QMChatCellDelegate
 
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.inputToolbar.contentView.backgroundColor = [UIColor whiteColor];
-    self.inputToolbar.contentView.textView.placeHolder = @"Message";
+    self.inputToolbar.contentView.textView.placeHolder = NSLocalizedString(@"SA_STR_MESSAGE_PLACEHOLDER", nil);
     self.attachmentCells = [NSMapTable strongToWeakObjectsMapTable];
     self.stringBuilder = [MessageStatusStringBuilder new];
     self.detailedCells = [NSMutableSet set];
@@ -105,7 +105,7 @@ QMChatCellDelegate
         if ([QBSession currentSession].currentUser.ID == userID) {
             return;
         }
-        strongSelf.title = @"typing...";
+        strongSelf.title = NSLocalizedString(@"SA_STR_MESSAGE_PLACEHOLDER", nil);
     }];
 
     // Handling user stopped typing.
@@ -118,7 +118,7 @@ QMChatCellDelegate
 - (void)refreshMessagesShowingProgress:(BOOL)showingProgress {
 	
 	if (showingProgress) {
-        [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:NSLocalizedString(@"SA_STR_LOADING_MESSAGES", nil) maskType:SVProgressHUDMaskTypeClear];
 	}
 	
     __weak __typeof(self)weakSelf = self;
@@ -131,7 +131,7 @@ QMChatCellDelegate
             [SVProgressHUD dismiss];
             
 		} else {
-			[SVProgressHUD showErrorWithStatus:@"Can not refresh messages"];
+			[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"SA_STR_ERROR", nil)];
 			NSLog(@"can not refresh messages: %@", response.error.error);
 		}
 	}];
@@ -168,7 +168,7 @@ QMChatCellDelegate
         [self.dataSource addMessagesToBottom:[self storedMessages]];
         [self refreshMessagesShowingProgress:NO];
     } else {
-        if (self.dataSource.totalMessagesCount == 0) [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeClear];
+        if (self.dataSource.totalMessagesCount == 0) [SVProgressHUD showWithStatus:NSLocalizedString(@"SA_STR_LOADING_MESSAGES", nil) maskType:SVProgressHUDMaskTypeClear];
         
         __weak __typeof(self)weakSelf = self;
         [[ServicesManager instance] cachedMessagesWithDialogID:self.dialog.ID block:^(NSArray *collection) {
@@ -310,7 +310,7 @@ QMChatCellDelegate
         //
         if (error != nil) {
             NSLog(@"Failed to send message with error: %@", error);
-            [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:error.localizedRecoverySuggestion type:TWMessageBarMessageTypeError];
+            [[TWMessageBarManager sharedInstance] showMessageWithTitle:NSLocalizedString(@"SA_STR_ERROR", nil) description:error.localizedRecoverySuggestion type:TWMessageBarMessageTypeError];
         }
     }];
     
@@ -416,9 +416,25 @@ QMChatCellDelegate
                                                            limitedToNumberOfLines:0];
         size = CGSizeMake(MIN(200, maxWidth), 200 + ceilf(bottomLabelSize.height));
     } else {
-        NSAttributedString *attributedString = [self attributedStringForItem:item];
-        
-        size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+        NSAttributedString *messagetextAttributedString = [self attributedStringForItem:item];
+		
+		NSAttributedString *topLabelAttributedString = [self attributedStringForItem:item];
+		
+		NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+		
+		CGSize maxSize = CGSizeMake(maxWidth, CGFLOAT_MAX);
+		
+		CGRect messageTextLabelRect = [messagetextAttributedString boundingRectWithSize:maxSize options:options context:nil];
+		CGRect topLabelTextLabelRect = [topLabelAttributedString boundingRectWithSize:maxSize options:options context:nil];
+		
+		NSAttributedString *desiredString = messagetextAttributedString;
+		
+		
+		if (messageTextLabelRect.size.width < topLabelTextLabelRect.size.width) {
+			desiredString = topLabelAttributedString;
+		}
+		
+        size = [TTTAttributedLabel sizeThatFitsAttributedString:desiredString
                                                 withConstraints:CGSizeMake(maxWidth, CGFLOAT_MAX)
                                          limitedToNumberOfLines:0];
     }
@@ -592,7 +608,7 @@ QMChatCellDelegate
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSUInteger lastSection = [self.collectionView numberOfSections] - 1;
     if (indexPath.section == lastSection && indexPath.item == [self.collectionView numberOfItemsInSection:lastSection] - 1) {
@@ -613,6 +629,8 @@ QMChatCellDelegate
     // marking message as read if needed
     QBChatMessage *itemMessage = [self.dataSource messageForIndexPath:indexPath];
     [self sendReadStatusForMessage:itemMessage];
+    
+    return [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 }
 
 #pragma mark - QMChatCellDelegate
